@@ -1,6 +1,6 @@
 import requests
 from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes, CallbackContext
+from telegram.ext import Application, CommandHandler, ContextTypes, CallbackContext, CallbackQueryHandler
 from moodle_config import MOODLE_URL, MOODLE_TOKEN # Ссылается на другой файл с конфигуратором
 
 # Функция для получения данных из Moodle API
@@ -66,3 +66,18 @@ async def course(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text('ID курса должен быть числом!')
     except Exception as e:
         await update.message.reply_text(f'Произошла ошибка: {str(e)}')
+
+def main():
+    # Заменяем YOUR_BOT_TOKEN на своего бота
+    application = Application.builder().token('YOUR_BOT_TOKEN').build()
+
+    # Добавление обработчиков команд
+    application.add_handler(CommandHandler('start', start))
+    application.add_handler(CommandHandler('course', course))
+
+    # Запуск бота
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
+
+if __name__ == '__main__':
+    main()
+
