@@ -1,7 +1,7 @@
 import requests
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes, CallbackContext, CallbackQueryHandler
-from moodle_config import MOODLE_URL, MOODLE_TOKEN # Ссылается на другой файл с конфигуратором
+from config import MOODLE_URL, MOODLE_TOKEN # Ссылается на другой файл с конфигуратором
 
 # Функция для получения данных из Moodle API
 def get_moodle_course_data(course_id):
