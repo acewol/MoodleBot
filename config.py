@@ -1,0 +1,2 @@
+MOODLE_URL = ''
+MOODLE_TOKEN = ''
