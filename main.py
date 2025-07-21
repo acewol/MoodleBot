@@ -22,7 +22,7 @@ def get_moodle_course_data(course_id):
         total_users = len(users)
         completed_users = sum(1 for user in users if user.get('lastcourseaccess', 0) > 0 and
                               user.get('enrolments', [{}])[0].get('status') == 0)
-        in_progress_users = sum(1 for users in users if users.get('lastcourseaccess', 0) > 0 and
+        in_progress_users = sum(1 for user in users if user.get('lastcourseaccess', 0) > 0 and
                                 user.get('enrolments', [{}])[0].get('status') == 0)
 
         return {
