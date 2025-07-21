@@ -1,6 +1,6 @@
 import requests
 from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, ContextTypes, CallbackContext
 from moodle_config import MOODLE_URL, MOODLE_TOKEN # Ссылается на другой файл с конфигуратором
 
 # Функция для получения данных из Moodle API
@@ -33,3 +33,36 @@ def get_moodle_course_data(course_id):
     except Exception as e:
         return {'error': str(e)}
 
+# Команда /start
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        'Привет! Я могу прислать статистику курсов Moodle.\n'
+        'Используйте команду /course <ID_курса> для получения информации.'
+    )
+
+# Команда /course
+async def course(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not context.args:
+        await update.message.reply_text('Пожалуйста, укажите ID курса: /course <ID_курса>')
+        return
+
+    try:
+        course_id = int(context.args[0])
+        data = get_moodle_course_data(course_id)
+
+        if 'error' in data:
+            await update.message.reply_text(f'Ошибка: {data["error"]}')
+            return
+
+        response = (
+            f'Статистика курса ID {course_id}\n'
+            f'Всего участников: {data["total"]}\n'
+            f'Прошли курс: {data["completed"]}\n'
+            f'Проходят курса: {data["in_progress"]}\n'
+        )
+        await update.message.reply_text(response)
+
+    except ValueError:
+        await update.message.reply_text('ID курса должен быть числом!')
+    except Exception as e:
+        await update.message.reply_text(f'Произошла ошибка: {str(e)}')
