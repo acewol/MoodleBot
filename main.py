@@ -69,7 +69,7 @@ async def course(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     # Заменяем YOUR_BOT_TOKEN на своего бота
-    application = Application.builder().token('').build()
+    application = Application.builder().token('YOUR_BOT_TOKEN').build()
 
     # Добавление обработчиков команд
     application.add_handler(CommandHandler('start', start))
